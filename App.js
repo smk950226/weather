@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
-export default class App extends React.Component {
+export default class App extends Component {
+  state = {
+    isLoaded: false,
+  }
   render() {
+    const { isLoaded } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.redView}/>
-        <View style={styles.yellowView}>
-          <View style={styles.redViewSmall}/>
-          <View style={styles.blueViewSmall}/>
-        </View>
-        <View style={styles.blueView}/>
+        {isLoaded ? null : (
+          <View style={styles.loading}>
+            <Text style={styles.loadingText}>Getting Wheather</Text>
+          </View>
+        )}
       </View>
     );
   }
@@ -21,29 +24,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  redView: {
+  loading: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#fdf6aa',
+    justifyContent: 'flex-end', 
+    paddingLeft: 25,
   },
-  yellowView: {
-    flex: 7,
-    backgroundColor: 'yellow',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  blueView: {
-    flex: 1,
-    backgroundColor: 'blue',
-  },
-  redViewSmall: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'red',
-  },
-  blueViewSmall: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'blue',
+  loadingText: {
+    fontSize: 38,
+    marginBottom: 100,
   }
 });
