@@ -8,6 +8,8 @@ export default class App extends Component {
   state = {
     isLoaded: false,
     error: null,
+    temperature: null,
+    name: null
   };
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
@@ -27,6 +29,10 @@ export default class App extends Component {
     .then(response => response.json())
     .then(json => {
       console.log(json);
+      this.setState({
+        temperature: json.main.temp,
+        name: json.weather[0].main
+      })
     })
   }
 
