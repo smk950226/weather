@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, StatusBar } from 'react-native';
 import Weather from './Weather'
 
+const API_KEY = 'c1c109c00995fc64c61eeece3b754086';
+
 export default class App extends Component {
   state = {
     isLoaded: false,
@@ -10,9 +12,7 @@ export default class App extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.setState({
-          isLoaded: true,
-        });
+        this._getWeather(position.coords.latitude, position.coords.longitude)
       },
       error => {
         this.setState({
@@ -21,6 +21,15 @@ export default class App extends Component {
       }
     );
   }
+
+  _getWeather = (lat, lon) => {
+    fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}`)
+    .then(response => response.json())
+    .then(json => {
+      console.log(json);
+    })
+  }
+
   render() {
     const { isLoaded, error } = this.state;
     return (
@@ -28,7 +37,7 @@ export default class App extends Component {
       <StatusBar hidden={true} />
         {isLoaded ? <Weather /> : (
           <View style={styles.loading}>
-            <Text style={styles.loadingText}>Getting Wheather..!</Text>
+            <Text style={styles.loadingText}>Getting Wheather</Text>
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
           </View>
         )}
